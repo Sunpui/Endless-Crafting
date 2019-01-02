@@ -44,7 +44,7 @@ module.exports = function EndlessCrafting(dispatch) {
 		});
 	}
 	
-	dispatch.hook('S_LOGIN', 10, event => {
+	dispatch.hook('S_LOGIN', 12, event => {
 		gameId = event.gameId;
 	});
 	
@@ -76,10 +76,13 @@ module.exports = function EndlessCrafting(dispatch) {
 				unk3: 0,
 				unk4: true
 			});
-			dispatch.hookOnce('S_FATIGABILITY_POINT', 3, (e) => {
-				if (enabled && e.fatigability > 500)
-					dispatch.toServer('C_START_PRODUCE', 1, craftItem);
-			});
+			setTimeout(() => { 
+				dispatch.hookOnce('S_FATIGABILITY_POINT', 3, (e) => {
+					if (enabled && e.fatigability > 500) {
+						dispatch.toServer('C_START_PRODUCE', 1, craftItem);
+					}
+				});
+			}, 200 );
 		} else {
 			dispatch.toServer('C_START_PRODUCE', 1, craftItem);
 		}
